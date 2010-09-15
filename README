@@ -1,0 +1,20 @@
+||||||||||||||||||||||||||||||||||||||||||
+ABK (secure)SiteHoster
+
+"Let Web Security Be Served By Web Server", don't make it a headache of Web Developer.
+I'm a security enthusiast and developer who is trying to build a Web Server secured from ground level.
+||||||||||||||||||||||||||||||||||||||||||
+ABK SiteHoster is aLEHNS (a Lightweight Extensible HTTP Network Server).
+
+Developed in Java. 
+
+Currently supports HTTP v1.1 Protocol's subset. 
+Adding features to make fully compliant. 
+
+Aiming to be a full-fledged WebSite Server playing main role in Security.
+
+XSS Patch has been applied to SiteHoster.
+A time being custom Server-Side Script support has been added.
+
+Currently aiming at standard CGI support and SQL-Injection Patch.
+
