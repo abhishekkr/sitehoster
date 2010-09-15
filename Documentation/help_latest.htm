@@ -1,0 +1,143 @@
+<html>
+<head>
+    <title>ABK (S)SH v1.0 Beta RC1 [Help File] XSS PATCH</title>
+    <style type="text/css">
+        #helpMain{
+          width:800;
+          
+        }    
+        
+        #horMenu{
+          background-color: black;
+          color:white;
+          padding:1px;
+        }
+        .mnu:link, .mnu:visited{
+          background-color: black;
+          color:#AABBCC;
+          text-align:center;
+        }       
+        .mnu:hover, .mnu:active
+        {
+        background-color:#AABBCC;
+        color: #112233;
+        }
+    
+        #banner {
+          height:370;
+          display:block; 
+          margin-right:0,auto; 
+          margin-left:0,auto;
+        }
+        #majorChanges {
+          height:370;
+          display:none;
+        }
+        #preRequirement {
+          height:370;
+          display:none;
+        }
+        #useSyntax {
+          height:370;
+          display:none;
+        }
+        #platform {display:block;}
+    </style>
+    
+    <script type="text/javascript">
+      function mnuClick(mnuItem){
+        document.getElementById("banner").style.display="none";
+        document.getElementById("majorChanges").style.display="none";
+        document.getElementById("preRequirement").style.display="none";
+        document.getElementById("useSyntax").style.display="none";
+        
+        document.getElementById(mnuItem).style.display="block";
+		if(mnuItem==="majorChanges")
+			document.getElementById("platform").style.display="none";
+		else
+			document.getElementById("platform").style.display="block";			
+      }
+    </script>
+</head>
+<body>
+    <div id="heading1">ABK (Secure)SiteHoster v1.0 Beta RC1 [with XSS Patch]</div>
+    <div id="helpMain">
+          <div id="horMenu">
+            [&nbsp;&nbsp;
+            <span id="mnuBanner" class="mnu" onclick="mnuClick('banner');"> What? Why? When? </span>
+            &nbsp;&nbsp;][&nbsp;&nbsp;
+            <span id="mnuMajorChanges" class="mnu" onclick="mnuClick('majorChanges');"> Major Changes </span>
+            &nbsp;&nbsp;][&nbsp;&nbsp;
+            <span id="mnuPreRequirement" class="mnu" onclick="mnuClick('preRequirement');"> Pre-Requirement </span>
+            &nbsp;&nbsp;][&nbsp;&nbsp;
+            <span id="mnuUseSyntax" class="mnu" onclick="mnuClick('useSyntax');"> Usage Syntax </span>
+            &nbsp;&nbsp;]
+        </div>
+        <div id="banner">
+          ABK SiteHoster<br/><br/>
+           is a Project to develop a Web Server, secure from the core...<br/>
+           like instead of trying to secure a Web Server with external modules when th base of server was created without<br/>
+           much security concerns in mind... it's an initiation to build a Web Server which has security as an integral part of it.<br/>
+           Not some extra plug-in, working optimally but not perfectly.<br/>
+           <br/>
+           As an inititation of the Project, building the sevrer from scratch... till the current release our Web Server<br/>
+           just support HTTP v1.1 Protocol, that too in a very limited subset of it.<br/>
+           <br/>
+           Till new features are being added to it... test the latest release... and Comment.
+        </div>
+        <div id="majorChanges">
+        Major Changes in v1.0Beta RC2:<br/>
+		[] there was a requirement raised by few users on un-availability of &lt;SCRIPT/&gt;<br/>
+in &lt;BODY/&gt; tag after the applying XSS-Patch; which will slow Page Rendering.<br/>
+So, this release is just with a small feature of allowing a &lt;SCRIPT/&gt; to be<br/>
+added to &lt;BODY/&gt; tag.<br/>
+<br/>
+For this, web developers need to add &lt;SCRIPT/&gt; to head with 'DEFER' keyword<br/> like the one supported in Internet Explorer.<br/>
+It's just that it doesn't expect browser to take care of it.<br/>
+But, pulls out all &lt;SCRIPT/&gt; with 'DEFER' from &lt;HEAD/&gt; and pushes it in<br/> Active Zone of &lt;BODY/&gt; tag.<br/>
+<br/>
+See an Eg. in ReadMe.txt; and also previous ChangeLog<br/>
+[-----]
+        <div id="platform">
+            NOTE:<br/>
+            default mode is Windows<br/>
+to make it work in Linux, the switch associated is -o POSIX<br/>
+to make it work in Windows, the switch associated is -o WIN32<br/>
+        </div>
+        </div>
+        <div id="preRequirement">
+        PreRequirement:<br/>
+        _______________<br/>
+        Install Java Virtual Machine on your Computer System.<br/>
+        <br/>
+        This Web Server has been entirely built on Standard Java Libraries.<br/>
+        Till current releae no external library is required to execute it, <br/>
+        and same will be the aim for future releases.<br/>
+        <br/>
+        |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        </div>
+        <div id="useSyntax">
+        Usage Syntax :<br/>
+        [] Starting HTTP Server hosting web files in &lt; C:\WebDoc\ &gt; folder with &lt; index.htm &gt; as <br/>
+        default file to open when root of IP accessed (it opens at Port 80 by default) on Windows<br/>
+        "java -jar http09_v0.5a.jar -r C:\WebDoc\ -f index.htm" -o WIN32<br/>
+        <br/><br/>
+        [] Starting HTTP Server hosting web files in &lt; C:\WebDoc\ &gt; folder with &lt; index.htm &gt; as <br/>
+        default file to open when root of IP accessed; and 1234 is Port to be opened at (so access <br/>
+        like http://IP:1234/index.htm) on Linux<br/>
+        "java -jar http09_v0.5a.jar -r C:\WebDoc\ -f index.htm -p 1234" -o POSIX<br/>
+        <br/><br/>
+        [] Starting HTTP Server hosting web files in &lt; C:\WebDoc\ &gt; folder; and &lt; 1234 &gt; is Port to be <br/>
+        opened at (so access like http://IP:1234/) with Windows<br/>
+        "java -jar http09_v0.5a.jar -r C:\WebDoc\ -p 1234" -o WIN32<br/>
+        <br/>
+        </div>
+        <div id="platform">
+            NOTE:<br/>
+            default mode is Windows<br/>
+to make it work in Linux, the switch associated is -o POSIX<br/>
+to make it work in Windows, the switch associated is -o WIN32<br/>
+        </div>
+    </div>
+</body>
+</html>

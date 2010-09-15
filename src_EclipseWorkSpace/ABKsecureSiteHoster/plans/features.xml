@@ -1,0 +1,101 @@
+<SiteHoster>
+	<features>
+		<feature name="ConfiguraTOR">
+			<applied>
+				<module name="AppCode">
+				</module>
+				<module name="MIMEType">
+				</module>
+			</applied>
+			<beta>
+				<module name="HTTPServerCode">
+				</module>
+				<module name="HTTPServerPages">
+				</module>
+				<module name="HTTPServerPaths">
+				</module>
+			</beta>
+			<future>
+				<module name="SecuritySettings">
+				</module>
+			</future>
+		</feature>
+		<feature name="ErrorHandler">
+			<applied>
+			</applied>
+			<beta>
+			</beta>
+			<future>
+				<module name="ErrorType">
+				</module>
+				<module name="ErrorLogger">
+				</module>
+				<module name="ErrorChecker">
+				</module>
+			</future>
+		</feature>
+		<feature name="ResourceHandler">
+			<applied>
+			</applied>
+			<beta>
+				<module name="ResourceReader">
+					<to_add>Overloading for Partial Content Reading</to_add>
+				</module>
+			</beta>
+			<future>
+				<module name="ResourceBasedResponseSetting">
+				</module>
+			</future>
+		</feature>
+		<feature name="RequestHandler">
+			<applied>
+			</applied>
+			<beta>
+			</beta>
+			<future>
+			</future>
+		</feature>
+		<feature name="ResponseHandler">
+			<applied>
+			</applied>
+			<beta>
+			</beta>
+			<future>
+			</future>
+		</feature>
+		<feature name="ThreadHandler">
+			<applied>
+			</applied>
+			<beta>
+				<module name="ThreadExecutor">
+				</module>
+			</beta>
+			<future>
+			</future>
+		</feature>
+		<feature name="SecuritYManager">
+			<applied>
+			</applied>
+			<beta>
+			</beta>
+			<future>
+			</future>
+		</feature>
+		<feature name="Term-in-a-TOR">
+			<applied>
+			</applied>
+			<beta>
+			</beta>
+			<future>
+			</future>
+		</feature>
+		<feature name="ADAPTOR">
+			<applied>
+			</applied>
+			<beta>
+			</beta>
+			<future>
+			</future>
+		</feature>
+	</features>
+</SiteHoster>

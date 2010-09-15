@@ -1,0 +1,25 @@
+
+public class testR {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		String res="<HTML><HEAD><TITLE>ABK</TITLE>" +
+				"<SCRIPT type='text/javascript' BODY>alert('body1');</script>" + 
+				"<script body>alert('body2');</SCRIPT>" +
+				"<Script>alert('head');</scripT>" +
+				"<SCRIPT src='dontknow.js' body/>" +
+				"<script src='headyo.js'/>" +
+				"<param anything/>" +
+				"</head><body>" +
+				"<input type='button' value='yo' onclick='alert(\"yeyo\");'/>A" +
+				"</body></html>";
+		getSecured.PatchForXSS pXSS = new getSecured.PatchForXSS();
+		int Q = pXSS.getML(res);
+		String Resource = res.substring(0,Q-1);
+		String GetVariables = res.substring(Q+1);		
+		System.out.println(Resource + "\n" + GetVariables);
+	}
+
+}

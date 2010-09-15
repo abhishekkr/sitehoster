@@ -1,0 +1,65 @@
+package getSecured;
+
+public class PatchForXSS {
+	private String ML;
+	private boolean isHead=false;
+	
+	public String getML(String realData){
+		ML=realData;
+		if(doesItNeedPatch1(realData)==true)
+			real2ML();
+		else
+			ML=applyEventCodePatch2(ML);
+		return ML;
+	}
+
+	private boolean real2ML(){
+		String tmpML = null;
+		int headStart, headEnd, bodyStart, bodyEnd;
+		tmpML = "<html>";
+		if(isHead==true){
+			headStart = ML.toLowerCase().indexOf("<head>")+6;
+			headEnd = ML.toLowerCase().indexOf("</head>");
+			tmpML = tmpML + "<HEAD>" + ML.substring(headStart, headEnd) + "</HEAD>";
+		}
+		String bodyArgs="";
+		int bodyIStart = ML.toLowerCase().indexOf("<body");
+		bodyStart = ML.toLowerCase().indexOf(">", bodyIStart)+1;
+		if(bodyIStart+6!=bodyStart && bodyIStart+6<bodyStart){
+			bodyArgs = ML.substring(bodyIStart+6,bodyStart-1);
+		}
+		bodyEnd = ML.toLowerCase().indexOf("</body>");
+		String bodyML = applyEventCodePatch2(ML.substring(bodyStart, bodyEnd)); 
+		bodyML = "<script type='text/javascript'>x=document.getElementsByTagName(\"BODY\");x[0].innerHTML = \"" 
+			+ XtraContentTool.escapeScript(bodyML) 
+			+ "\"</script>";
+		tmpML = tmpML + "<BD><BODY "+ bodyArgs +">" + bodyML + "</BODY></BD>";
+		tmpML = tmpML + "</html>";
+		ML = tmpML;
+		System.out.println("+++++requires XSS Patch : ML");
+		return false;
+	}
+	
+	private boolean doesItNeedPatch1(String realData) {
+		String realDataTmp = realData.toLowerCase();
+		if(realDataTmp.contains("<head>") && realDataTmp.contains("</head>")){
+			isHead = true;
+		}
+		if( realDataTmp.contains("<body") && realDataTmp.contains("</body>")){
+			System.out.println("+++++requires XSS Patch");
+			return true;
+		}
+		return false;
+	}
+	
+	private String applyEventCodePatch2(String realData) {
+		String realDataTmp = realData.replace("javascript", "javascript<span/>");
+		return realDataTmp;
+	}
+	
+	private String fetchBodyScript(String headR){
+		headStart=0;
+		headEnd=headR.length()-1;
+	//	System.out.println(headR.);
+	}
+}

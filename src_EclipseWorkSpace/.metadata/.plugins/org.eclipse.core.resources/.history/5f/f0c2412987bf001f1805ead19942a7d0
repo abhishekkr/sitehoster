@@ -1,0 +1,115 @@
+package getSecured;
+
+public class SeparateJSBody {
+
+	public static void tellDefer(String headContent) {
+		boolean isLT = false;
+		boolean isJustAfterLT = false;
+		boolean isQuote = false;
+		boolean isSQuote = false;
+		boolean isDQuote = false;
+		boolean isSlash = false;
+		boolean isSpace = false;
+		boolean isScript = false;
+		boolean isTagOpen = false;
+		
+		boolean isNewWord = false;
+		boolean isDefer = false;
+
+		char prevChr = ' ';
+		char currChr = ' ';
+		
+		String tmpHD = headContent;
+		int headLen = tmpHD.length();
+		
+		String hdCnt = "";
+		String bdCnt = "";
+		
+		String hdrRefresh="";
+		String hdrWord="";
+		String tagName="";
+		System.out.println("head : [ " + tmpHD + " ]\n");
+		for(int idx=0; idx<headLen; idx++){
+			//currChr =  Character.toString(char);
+			currChr = tmpHD.charAt(idx);
+			if(currChr=='\'' && isDQuote==false && prevChr!='\\'){
+				isSQuote = !(isSQuote);
+				isQuote = isSQuote;
+			}
+			else if(currChr=='"' && isSQuote==false && prevChr!='\\'){
+				isDQuote = !(isDQuote);
+				isQuote = isDQuote;
+			}				
+			hdrRefresh += Character.toString(currChr);
+			//checking if word formed till now is DEFER
+			boolean toChkWord = (currChr=='=' || currChr==' ' || currChr=='>' || currChr=='/');
+			if(toChkWord==true && isLT==true && hdrWord.equalsIgnoreCase("defer")){
+				//System.out.println("w : [ " + hdrWord + " ]");
+				isDefer = true;
+			}
+			
+			if(isQuote==false){
+				//marking boolean char-based flags
+				if(currChr=='<' && isLT==false){
+					isLT = true;
+					isJustAfterLT = true;
+					tagName="";
+					isTagOpen = true;
+				}
+				else if(isLT==true && currChr=='>'){
+					isLT = false;
+					if(isSlash==true){
+						isTagOpen = false;
+						if(isDefer == true){
+							//System.out.println("deferred : [ " + hdrRefresh + " ]");
+							bdCnt += hdrRefresh;
+							isDefer=false;
+						}
+						else{
+							hdCnt += hdrRefresh;
+						}
+						hdrRefresh = "";
+					}
+					isSlash = false;
+				}
+				else if(isLT==true && currChr=='/'){
+					isSlash = true;
+				}
+				else if(currChr==' '){
+					isSpace = true;
+				}
+				
+				if(isTagOpen == true){
+					if(isJustAfterLT==true){
+						if(hdrWord.trim()!="" && ( isWhiteSpace(currChr)||(currChr=='>') )){
+							isJustAfterLT=false;
+							tagName=hdrWord.trim();
+							//System.out.println("tag : [ " + tagName + " ]");
+						}
+					}
+				}
+				
+				//calculating
+			}
+
+			if(toChkWord==true  || currChr=='<'){
+				hdrWord = "";
+			}
+			else{
+				hdrWord += Character.toString(currChr);
+			}
+						
+			//it should be last
+			prevChr = currChr;
+		}		
+		System.out.println("head : [ " + hdCnt + " ]");
+		System.out.println("deferredToBody : [ " + bdCnt + " ]");
+	}
+
+	private static boolean isWhiteSpace(char chr) {
+		if(chr==' ' || chr=='\t' || chr=='\n')
+			return true;
+		return false;
+	}
+
+}

@@ -1,0 +1,101 @@
+package getSecured;
+
+public class SeparateJSBody {
+
+	public static void tellDefer(String headContent) {
+		boolean isLT = false;
+		boolean isJustAfterLT = false;
+		boolean isQuote = false;
+		boolean isSQuote = false;
+		boolean isDQuote = false;
+		boolean isSlash = false;
+		boolean isSpace = false;
+		boolean isScript = false;
+		boolean isTagOpen = false;
+		
+		boolean isNewWord = false;
+		boolean isDefer = false;
+
+		char prevChr = ' ';
+		char currChr = ' ';
+		
+		String tmpHD = headContent;
+		int headLen = tmpHD.length();
+		
+		String hdCnt = "";
+		String bdCnt = "";
+		
+		String hdrRefresh="";
+		String hdrWord="";
+		String tagName="";
+		System.out.println("head : [ " + tmpHD + " ]\n");
+		for(int idx=0; idx<headLen; idx++){
+			//currChr =  Character.toString(char);
+			currChr = tmpHD.charAt(idx);
+			if(currChr=='\'' && isDQuote==false && prevChr!='\\'){
+				isSQuote = !(isSQuote);
+				isQuote = isSQuote;
+			}
+			else if(currChr=='"' && isSQuote==false && prevChr!='\\'){
+				isDQuote = !(isDQuote);
+				isQuote = isDQuote;
+			}
+			
+			if(isQuote==false){				
+				//marking boolean char-based flags
+				if(currChr=='<' && isLT==false){
+					isLT = true;
+					isJustAfterLT = true;
+					tagName="";
+				}
+				else if(isLT==true && currChr=='>'){
+					isLT = false;
+					if(isSlash==false){
+						isTagOpen = true;
+					}
+					else{
+						isTagOpen = false;
+					}
+				}
+				else if(isLT==true && currChr=='/'){
+					isSlash = true;
+				}
+				else if(currChr==' '){
+					isSpace = true;
+				}
+				
+				if(isTagOpen == true){
+					if(isJustAfterLT==true && hdrWord.trim()!="" && !isWhiteSpace(currChr)){
+						tagName=hdrWord.trim();
+					}
+					System.out.println("hdrWord : [ " + tagName + " ]");
+				}
+				
+				//calculating
+			}
+
+			//checking if word formed till now is DEFER
+			boolean toChkWord = (currChr=='=' || currChr==' ' || currChr=='>' || currChr=='/');
+			if(toChkWord==true && hdrWord.equalsIgnoreCase("defer")){
+				isDefer = true;
+			}
+			if(toChkWord==true  || currChr=='<'){
+				hdrWord = "";
+			}
+			else{
+				hdrWord += Character.toString(currChr);
+			}
+			hdrRefresh += Character.toString(currChr);
+						
+			//it should be last
+			prevChr = currChr;
+		}		
+	}
+
+	private static boolean isWhiteSpace(char chr) {
+		if(chr==' ' || chr=='\t' || chr=='\n')
+			return true;
+		return false;
+	}
+
+}

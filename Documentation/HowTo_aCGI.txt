@@ -1,0 +1,21 @@
+aCGI is no-standard but just a quick support for 'Server side Scripting' in this Web Server till I add Standard Support.
+
+Currently it does nothing great, except seperating all GET Variables sent to Server; and provide it to Server-Side Script or Binary as different parameters.
+
+Example:
+for a request like 
+http://www.WEBSITE.com/a-cgi/post.py?name=abk&project=sitehoster
+it passes all GET Variables to 'post.py' as
+cmd:\>python post.py name=abk project=sitehoster
+
+To implement:
+[] all Scripts should be place in any location under $DocumentRoot/a-cgi/*
+[] and similar to CGI should have first line referring to its interpreter
+as
+-----start-of-script-----
+line1:	#!python
+line2:	...anything at all in rest of lines
+-----end--of--script-----
+[] you can even place Binaries in location $DocumentRoot/a-cgi/bin/*
+
+a live example of it as working can be seen in XSS PoC provided

@@ -1,0 +1,42 @@
+
+public class testR {
+	
+	static String platform = "WIN323";
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		String res="<HTML>\n<HEAD>\n<TITLE>ABK</TITLe>\n" +
+				"<SCRIPT type='text/javascript' DeFeR>alert('body1');</script>\n" + 
+				"<script DefeR='DEFER'>alert('body2');</SCRIPT>\n" +
+				"<Script>alert('head');</scripT>\n" +
+				"<SCRIPT src='dontknow.js' body/>\n" +
+				"< script src='headyo.js'/>\n" +
+				"<param anything/>\n" +
+				"<param DeFEr/>\n" +
+				"< SCRIPT type='text/javascript' > alert( ' DEFer ') ;</script>\n" + 
+				"</head>\n<body>\n" +
+				"<input type='button' value='yo' onclick='alert(\"yeyo\");'/>\nA says Defer\n" +
+				"</body>\n</html>\n";
+		getSecured.PatchForXSS pXSS = new getSecured.PatchForXSS();
+		String patched = pXSS.getML(res);	
+		//System.out.println(getRequiredPath("/tmp/site/"));
+	}
+	
+	private static String getRequiredPath(String actualPath) {
+		String reqPath=actualPath;
+
+		if (platform == "WIN32"){
+			if(actualPath.endsWith("\\"))
+				reqPath=actualPath.substring(0, actualPath.length()-1);
+		}
+		else{
+			if(actualPath.endsWith("/"))
+				reqPath=actualPath.substring(0, actualPath.length()-1);
+		}
+			
+		return reqPath;
+	}
+
+}

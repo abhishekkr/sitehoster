@@ -1,0 +1,6 @@
+1281031713078	Rename package 'resourceHandler.CGI'
+1281032333187	Delete element
+1281032374234	Rename type 'CGIHandler'
+1281032388640	Rename type 'PHPHandler'
+1281035358421	Encapsulate field 'PHPCLI'
+1281212868472	Rename local variable 'objSvrCGIHnd'
