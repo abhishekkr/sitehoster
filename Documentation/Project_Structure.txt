@@ -1,0 +1,161 @@
+[src]
+|
+|=+[getSecured]
+| |
+| |=+[PatchForXSS]
+| | |
+| | |=+[getML]:public
+| | |
+| | |=+[real2ML]
+| | |
+| | |=+[doesItNeedPatch1]
+| | |
+| | |=+[applyEventCodePatch2]
+| | |
+| | |=+[...]
+| | |
+| | |=+[called(getSecured.XSSDeferJSBody.tellDefer)]
+| | |
+| | |=+[called(getSecured.XtraContentTool.escapeScript)]
+| |
+| |=+[ReportAttack]
+| | |
+| | |=+[GETResManipulation]:public,static
+| | |
+| | |=+[...]
+| |
+| |=+[XSSDeferJSBody]
+| | |
+| | |=+[tellDefer]:public,static
+| | |
+| | |=+[isWhiteSpace]:public,static
+| | |
+| | |=+[...]
+| |
+| |=+[XtraContentTool]
+| | |
+| | |=+[escapeScript]:public,static
+| | |
+| | |=+[...]
+| |
+| |=+[...]
+| 
+|=+[httpServer]
+| |
+| |=+[HTTPServer]
+| | |
+| | |=+[HTTPServer]:constructor
+| | |
+| | |=+[run]:override
+| | |
+| | |=+[handleClient]
+| | |
+| | |=+[...]
+| |
+| |=+[ThreadExecutor]
+| | |
+| | |=+[main]:public,static
+| | |
+| | |=+[getRequiredPath]
+| | |
+| | |=+[showPoolProp]
+| | |
+| | |=+[showThreadProp]
+| | |
+| | |=+[showSocketProp]
+| | |
+| | |=+[getPlatform]:public,static
+| | |
+| | |=+[...]
+| |
+| |=+[...]
+|
+|=+[requestHandler]
+| |
+| |=+[RequestRecord]
+| | |
+| | |=+[...]
+| |
+| |=+[RequestRecordUtils]
+| | |
+| | |=+[...]
+| |
+| |=+[...]
+|
+|=+[resourceHandler]
+| |
+| |=+[FileR]
+| | |
+| | |=+[...]
+| |
+| |=+[ResReader]
+| | |
+| | |=+[...]
+| |
+| |=+[ServerSideScripter]
+| | |
+| | |=+[...]
+| | |
+| | |=+[called(getSecured.PatchForXSS.getML)]
+| |
+| |=+[SvrACGIHandler]
+| | |
+| | |=+[...]
+| |
+| |=+[SvrCGIHandler]
+| | |
+| | |=+[...]
+| |
+| |=+[SvrPHPHandler]
+| | |
+| | |=+[...]
+| |
+| |=+[...]
+|
+|=+[responseHandler]
+| |
+| |=+[Responder]
+| | |
+| | |=+[...]
+| | |
+| | |=+[called(getSecured.ReportAttack.GETResManipulation)]
+| |
+| |=+[ResponseRecord]
+| | |
+| | |=+[...]
+| |
+| |=+[ResponseRecordUtils]
+| | |
+| | |=+[...]
+| |
+| |=+[...]
+|
+|=+[serverConfig]
+| |
+| |=+[appMACROS]
+| | |
+| | |=+[...]
+| |
+| |=+[ConfigLoader]
+| | |
+| | |=+[...]
+| |
+| |=+[ContentType]
+| | |
+| | |=+[...]
+| |
+| |=+[ServerCode]
+| | |
+| | |=+[...]
+| |
+| |=+[ServerPages]
+| | |
+| | |=+[...]
+| |
+| |=+[ServerPaths]
+| | |
+| | |=+[...]
+| |
+| |=+[...]
+|
+|=+[...]
