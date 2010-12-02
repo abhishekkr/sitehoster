@@ -2443,3 +2443,13 @@ java.lang.OutOfMemoryError: PermGen space
 !STACK
 java.lang.OutOfMemoryError: PermGen space
 
+!SESSION 2010-12-03 00:28:34.797 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_21
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2010-12-03 00:29:06.376
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.

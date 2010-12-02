@@ -1,0 +1,7 @@
+package serverConfig;
+
+public class ConfigLoader {
+	private String CONSOLE="";
+	private String PHPCLI="";
+	private boolean PATCHXSS=false;
+}

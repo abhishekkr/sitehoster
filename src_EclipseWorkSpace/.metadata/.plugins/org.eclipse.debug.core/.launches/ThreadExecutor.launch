@@ -7,6 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="httpServer.ThreadExecutor"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-r &quot;E:\X-Conf\SiteHoster_test\html&quot; -os WIN32"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-r &quot;E:\__NU\projects\sitehoster\Binary&quot; -os WIN32 -xss"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ABKsecureSiteHoster"/>
 </launchConfiguration>

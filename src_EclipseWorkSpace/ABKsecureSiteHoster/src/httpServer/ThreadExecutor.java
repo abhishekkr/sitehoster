@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import resourceHandler.ServerSideScripter;
 import serverConfig.appMACROS;
 
 import httpServer.HTTPServer;
@@ -19,30 +18,39 @@ public class ThreadExecutor{
 
 	public static void main(String[] args) {
 		boolean docRootCheck = false;
-		ServerSideScripter objSvrSidScr = new ServerSideScripter();
 		//temp assignment
-		objSvrSidScr.setPHPCLI(appMACROS.TEMP_PHPCLI);
+		serverConfig.ConfigLoader.PHPCLI = appMACROS.TEMP_PHPCLI;
 		//parsing parameters
 		if(args.length>0){
 			for(int argsIdx = 0; argsIdx<args.length; argsIdx++){
 				if(args[argsIdx].equalsIgnoreCase("-r") || args[argsIdx].equalsIgnoreCase("--DocRoot")){
 					serverConfig.ServerPaths.WEBDOCS=getRequiredPath(args[++argsIdx]);					
 					docRootCheck = true;
+					System.out.println("\n+=- user asked to set Document Root:"+serverConfig.ServerPaths.WEBDOCS);
 				}
 				else if(args[argsIdx].equalsIgnoreCase("-f") || args[argsIdx].equalsIgnoreCase("--DefaultFile")){
-					serverConfig.ServerPaths.defaultPage=args[++argsIdx];					
+					serverConfig.ServerPaths.defaultPage=args[++argsIdx];	
+					System.out.println("\n+=- user asked to set Default-Root-File:"+serverConfig.ServerPaths.defaultPage);				
 				}
 				else if(args[argsIdx].equalsIgnoreCase("-p") || args[argsIdx].equalsIgnoreCase("--Port")){
-					PORT=Integer.parseInt(args[++argsIdx]);					
+					PORT=Integer.parseInt(args[++argsIdx]);		
+					System.out.println("\n+=- user asked to set Port:"+PORT);			
 				}
 				else if(args[argsIdx].equalsIgnoreCase("-os") || args[argsIdx].equalsIgnoreCase("--Platform")){
-					PLATFORM=(args[++argsIdx]);					
+					PLATFORM=(args[++argsIdx]);			
+					System.out.println("\n+=- user asked to set OS:"+PLATFORM);		
 				}
 				else if(args[argsIdx].equalsIgnoreCase("-php") || args[argsIdx].equalsIgnoreCase("--PHPCLI")){
-					objSvrSidScr.setPHPCLI((args[++argsIdx]));					
+					serverConfig.ConfigLoader.PHPCLI = (args[++argsIdx]);		
+					System.out.println("\n+=- user asked to set PHP-CLI path:"+serverConfig.ConfigLoader.PHPCLI);			
 				}
 				else if(args[argsIdx].equalsIgnoreCase("-cgi") || args[argsIdx].equalsIgnoreCase("--CONSOLE")){
-					objSvrSidScr.setCONSOLE((args[++argsIdx]));					
+					serverConfig.ConfigLoader.CONSOLE = (args[++argsIdx]);		
+					System.out.println("\n+=- user asked to set CGI path:"+serverConfig.ConfigLoader.CONSOLE);			
+				}
+				else if(args[argsIdx].equalsIgnoreCase("-xss") || args[argsIdx].equalsIgnoreCase("--patchxss")){
+					serverConfig.ConfigLoader.PATCHXSS=true;	
+					System.out.println("\n+=- user asked to patch XSS");				
 				}
 			}
 			File f1 = new File(serverConfig.ServerPaths.WEBDOCS);

@@ -1,0 +1,169 @@
+package httpServer;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import resourceHandler.ServerSideScripter;
+import serverConfig.appMACROS;
+
+import httpServer.HTTPServer;
+
+public class ThreadExecutor{
+	private static int PORT = 80;
+	private static String PLATFORM = "WIN32"; //"POSIX"//"MAC"
+	private static ServerSocket servSock;
+
+	public static void main(String[] args) {
+		boolean docRootCheck = false;
+		ServerSideScripter objSvrSidScr = new ServerSideScripter();
+		//temp assignment
+		serverConfig.ConfigLoader.PHPCLI = appMACROS.TEMP_PHPCLI;
+		//parsing parameters
+		if(args.length>0){
+			for(int argsIdx = 0; argsIdx<args.length; argsIdx++){
+				if(args[argsIdx].equalsIgnoreCase("-r") || args[argsIdx].equalsIgnoreCase("--DocRoot")){
+					serverConfig.ServerPaths.WEBDOCS=getRequiredPath(args[++argsIdx]);					
+					docRootCheck = true;
+					System.out.println("\n+=- user asked to set Document Root\n");
+				}
+				else if(args[argsIdx].equalsIgnoreCase("-f") || args[argsIdx].equalsIgnoreCase("--DefaultFile")){
+					serverConfig.ServerPaths.defaultPage=args[++argsIdx];	
+					System.out.println("\n+=- user asked to set Default-Root-File");				
+				}
+				else if(args[argsIdx].equalsIgnoreCase("-p") || args[argsIdx].equalsIgnoreCase("--Port")){
+					PORT=Integer.parseInt(args[++argsIdx]);		
+					System.out.println("\n+=- user asked to set Port");			
+				}
+				else if(args[argsIdx].equalsIgnoreCase("-os") || args[argsIdx].equalsIgnoreCase("--Platform")){
+					PLATFORM=(args[++argsIdx]);			
+					System.out.println("\n+=- user asked to set OS");		
+				}
+				else if(args[argsIdx].equalsIgnoreCase("-php") || args[argsIdx].equalsIgnoreCase("--PHPCLI")){
+					serverConfig.ConfigLoader.PHPCLI = (args[++argsIdx]);		
+					System.out.println("\n+=- user asked to set PHP-CLI path");			
+				}
+				else if(args[argsIdx].equalsIgnoreCase("-cgi") || args[argsIdx].equalsIgnoreCase("--CONSOLE")){
+					objSvrSidScr.setCONSOLE((args[++argsIdx]));		
+					System.out.println("\n+=- user asked to set CGI path");			
+				}
+				else if(args[argsIdx].equalsIgnoreCase("-xss") || args[argsIdx].equalsIgnoreCase("--patchxss")){
+					objSvrSidScr.setXSS();	
+					System.out.println("\n+=- user asked to patch XSS");				
+				}
+			}
+			File f1 = new File(serverConfig.ServerPaths.WEBDOCS);
+			if(f1.isDirectory()!=true){
+				System.out.println("Error: Web_Docs_Path specified doesn't exist.");
+				System.exit(-1);
+			}
+		}
+		else{
+			System.out.println("Error: Wrong Syntax\n");
+			System.out.println("Syntax: " + args[0] + " -r Web_Docs_Path(mandatory) <-f DefaultFile(optional)> <-p Port(optional)> <-os WIN32|POSIX|MAC>");
+			System.out.println("----------------------------------------------------\n");
+			System.out.println("\nEg: " + args[0] + " -r C:\\wwwRoot");
+			System.out.println("\nTo check it's working: Browse URL 'http://127.0.0.1/index.htm'");
+			System.out.println("and it should open C:\\wwwRoot\\index.htm file in your browser.");
+			System.out.println("----------------------------------------------------\n");
+			System.out.println("\nEg: " + args[0] + " -r C:\\wwwRoot -f index.htm -p 10000 -os POSIX");
+			System.out.println("\nTo check it's working: Browse URL 'http://127.0.0.1:10000/'");
+			System.out.println("and it should open C:\\wwwRoot\\index.htm file in your browser.");
+			System.out.println("----------------------------------------------------\n");
+			System.exit(1);
+		}
+		
+		if(docRootCheck == false){
+			System.out.println("Error: Wrong Syntax :: You forgot to mention Document Root with switch '-r path'\n");
+			System.out.println("Syntax: " + args[0] + " -r Web_Docs_Path(mandatory) <-f DefaultFile(optional)> <-p Port(optional)>");
+			System.out.println("----------------------------------------------------\n");
+			System.out.println("\nEg: " + args[0] + " -r C:\\wwwRoot");
+			System.out.println("\nTo check it's working: Browse URL 'http://127.0.0.1/index.htm'");
+			System.out.println("and it should open C:\\wwwRoot\\index.htm file in your browser.");
+			System.out.println("----------------------------------------------------\n");
+			System.exit(1);
+		}
+
+		System.out.println("\nOpening Port " + PORT);
+		//STEP 1 : attaching Server Socket to Port
+		try {
+			servSock = new ServerSocket(PORT);
+		} catch (IOException e) {
+			System.out.println("Unable to attach to PORT " + PORT + "\nTraceString: ");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		
+		//STEP 2 : handle Client at attached Port via Socket in threads
+        ExecutorService pool = Executors.newFixedThreadPool(100);
+        showPoolProp(pool);
+		try {
+			do{
+				Socket link = null;
+					link = servSock.accept();
+					Runnable clientReq = new  HTTPServer(link);
+					pool.execute(clientReq);
+				showThreadProp(clientReq);
+				showSocketProp(link);
+			}while(true);
+		} catch (IOException e) {
+			pool.shutdown();
+			System.out.println("Unable to accept a Client Request.\n " + "\nTraceString: ");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}/*end :: main()*/
+	
+	//checks if Document Root has a '/' at end and removes it to suit total path
+	private static String getRequiredPath(String actualPath) {
+		String reqPath=actualPath;
+		if (httpServer.ThreadExecutor.getPlatform().equalsIgnoreCase("WIN32")){
+			if(actualPath.endsWith("\\"))
+				reqPath=actualPath.substring(0, actualPath.length()-1);
+		}
+		else{
+			if(actualPath.endsWith("/"))
+				reqPath=actualPath.substring(0, actualPath.length()-1);
+		}
+		return reqPath;
+	}
+
+	private static void showPoolProp(ExecutorService pool){
+		System.out.println("------------------------------------------");
+		System.out.println("::Executor POOL:: \n\tCanonical Name:" + pool.getClass().getCanonicalName());
+		System.out.println("\tName:" + pool.getClass().getName());
+		System.out.println("\tSimple Name:" + pool.getClass().getSimpleName());
+		System.out.println("\tHashCode:" + pool.getClass().hashCode());
+		System.out.println("\tModifiers:" + pool.getClass().getModifiers());
+		System.out.println("\tTo String:" + pool.getClass().toString());
+		System.out.println("------------------------------------------\n");
+	}
+	
+	private static void showThreadProp(Runnable thd){
+		System.out.println("------------------------------------------");
+		System.out.println("::New Client:: \n\tCanonical Name:" + thd.getClass().getCanonicalName());
+		System.out.println("\tName:" + thd.getClass().getName());
+		System.out.println("\tSimple Name:" + thd.getClass().getSimpleName());
+		System.out.println("\tHashCode:" + thd.getClass().hashCode());
+		System.out.println("\tModifiers:" + thd.getClass().getModifiers());
+		System.out.println("\tTo String:" + thd.getClass().toString());
+		System.out.println("\tObject HashCode:" + thd.hashCode());
+		System.out.println("------------------------------------------\n");
+	}
+	
+	private static void showSocketProp(Socket skt){
+		System.out.println("------------------------------------------");
+		System.out.println("::New Socket:: \n\tLocal Port:" + skt.getLocalPort());
+		System.out.println("\tPort:" + skt.getPort());
+		System.out.println("\tTo String:" + skt.toString());
+		System.out.println("------------------------------------------\n");
+	}
+	
+	public static String getPlatform(){
+		return PLATFORM;
+	}
+
+}
